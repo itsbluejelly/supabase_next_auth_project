@@ -43,7 +43,7 @@ export default function Login() {
         throw new Error(error.message)
       }else{
         setError("")
-        setSuccess(`An email has successfully been sent to ${formData.email}`)
+        setSuccess(`Login successful`)
         router.refresh()
       }
     }catch (error: unknown) {

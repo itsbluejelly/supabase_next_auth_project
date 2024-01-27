@@ -63,35 +63,40 @@ export default function ArticleItem({
     }
   }, [user, votes])
 
-  return <div className="border flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-gray-900">
-    <h2>{title}</h2>
-    
-    {
-        !isLoading
-            ?
-        <div className={`grid ${hasVoted ? 'text-rose-700' : 'text-white'}`}>
-            <span onClick={() => {
-                setIsLoading(true)
-                newVote(id)
-                setIsLoading(false)
-            }}>
-                <IconsUp />
+  return (
+    <div>
+      <div className="border flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-gray-900">
+        <h2>{title}</h2>
+        {!isLoading ? (
+          <div className={`grid ${hasVoted ? "text-rose-700" : "text-white"}`}>
+            <span
+              onClick={() => {
+                setIsLoading(true);
+                newVote(id);
+                setIsLoading(false);
+              }}
+            >
+              <IconsUp />
             </span>
 
             <span>{votes?.length} votes</span>
 
-            <span onClick={() => {
-                setIsLoading(true)
-                newVote(id, true)
-                setIsLoading(false)
-            }}>
-                <IconsUp className="rotate-180" />
+            <span
+              onClick={() => {
+                setIsLoading(true);
+                newVote(id, true);
+                setIsLoading(false);
+              }}
+            >
+              <IconsUp className="rotate-180" />
             </span>
-        </div>
-            :
-        <p>Loading...</p>
-    }
+          </div>
+        ) : (
+          <p>Loading...</p>
+        )}
+      </div>
 
-    {error && <p>{error}</p>}
-  </div>;
+      {error && <p>{error}</p>}
+    </div>
+  );
 }
