@@ -2,24 +2,20 @@
 
 import React from "react"
 import { supabase } from "@/lib/supabase"
+import { useRouter } from "next/navigation"
 
-type FormData = {
-    email: string,
-    password: string,
-}
+type FormData = { email: string }
 
 export default function Login(){
-    const [formData, setFormData] = React.useState<FormData>({
-        email: '',
-        password: ''
-    })
+    const [formData, setFormData] = React.useState<FormData>({ email: '' })
+    const [success, setSuccess] = React.useState<boolean>(false)
 
     async function login(): Promise<void>{
         try{
-            const {data, error} = await supabase.auth.signInWithPassword(formData)
+            const {data, error} = await supabase.auth.signInWithOtp({...formData, options: { shouldCreateUser: true }})
 
-            if(data){
-                console.log(data)
+            if(data.user){
+                setSuccess(true)
             }else{
                 throw new Error(error?.message)
             }
@@ -50,7 +46,7 @@ export default function Login(){
           />
         </div>
 
-        <div className="grid">
+        {/* <div className="grid">
           <label htmlFor="password">Password</label>
 
           <input
@@ -63,8 +59,9 @@ export default function Login(){
               handleFormData(e)
             }
           />
-        </div>
+        </div> */}
 
+        {success && <p className="my-4 bg-green-100 px-2 text-green-600">An email has been sent to {formData.email}</p>}
         <button onClick={() => login()}>Log in</button>
       </div>
     );
