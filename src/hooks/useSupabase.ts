@@ -8,36 +8,16 @@ export const useSupabase = () => {
 
   const getCurrentUser = async () => {
     const { data: { user: currentUser } } = await supabase.auth.getUser()
+
+    if(!currentUser){
+      throw new Error("Sorry, user not found")  
+    }
+
     setUser(currentUser)
-  }
-
-  const getSession = async () => {
-    const {
-      data: {
-        session
-      }
-    } = await supabase.auth.getSession();
-
-    const { access_token, refresh_token }: any = session;
-
-    await setSession(access_token, refresh_token);
-
-    return session
-  }
-
-  const setSession = async (access_token: string, refresh_token: string) => {
-    await supabase.auth.setSession({
-      access_token,
-      refresh_token
-    });
-
-    return true
   }
 
   return {
     user,
-    getCurrentUser,
-    setSession,
-    getSession
+    getCurrentUser
   }
 }

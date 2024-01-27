@@ -5,13 +5,15 @@ export const useArticles = () => {
   const [articles, setArticles] = useState<any[]>([])
 
   const getArticles = async () => {
-    const { data} = await supabase
+    const { data, error} = await supabase
       .from('articles')
       .select('*, votes(*)')
     
     if (data) {
       console.log(data)
       setArticles(data)
+    }else{
+      throw new Error(error.message)
     }
   }
 

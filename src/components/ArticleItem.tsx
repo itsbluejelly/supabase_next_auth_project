@@ -24,30 +24,73 @@ export default function ArticleItem({
   const { user, getCurrentUser } = useSupabase();
   const { newVote } = useArticles()
 
+  const [error, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const [hasVoted, setHasVoted] = useState<boolean>(false);
 
   useEffect(() => {
-    getCurrentUser();
+    setIsLoading(true)
+    setError('')
+
+    try{
+        getCurrentUser();
+    }catch(error){
+        setError((error as Error).message)
+    }finally{
+        setIsLoading(false)
+    }
+
   }, [getCurrentUser])
 
   useEffect(() => {
-    if (user) {
-      const { id } = user;
-      const findVote = votes?.find(v => v.user_id === id);
-      if (findVote) setHasVoted(true)
+    setIsLoading(true)
+
+    try{
+       if (user) {
+            const { id } = user;
+            const findVote = votes?.find(v => v.user_id === id);
+            
+            if (findVote){ 
+                setHasVoted(true)
+                setError(`Yor vote is already casted for ${findVote}`)
+            }
+        }
+    }catch(error){
+        setError((error as Error).message)
+    }finally{
+        setIsLoading(false)
     }
   }, [user, votes])
 
   return <div className="border flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-gray-900">
     <h2>{title}</h2>
-    <div className={`grid ${hasVoted ? 'text-rose-700' : 'text-white'}`}>
-      <span onClick={() => newVote(id)}>
-        <IconsUp />
-      </span>
-      <span>{votes?.length} votes</span>
-      <span onClick={() => newVote(id, true)}>
-        <IconsUp className="rotate-180" />
-      </span>
-    </div>
+    {
+        isLoading
+            ?
+        <div className={`grid ${hasVoted ? 'text-rose-700' : 'text-white'}`}>
+            <span onClick={() => {
+                setIsLoading(true)
+                newVote(id)
+                setIsLoading(false)
+            }}>
+                <IconsUp />
+            </span>
+
+            <span>{votes?.length} votes</span>
+
+            <span onClick={() => {
+                setIsLoading(true)
+                newVote(id, true)
+                setIsLoading(false)
+            }}>
+                <IconsUp className="rotate-180" />
+            </span>
+        </div>
+            :
+        <p>Loading...</p>
+    }
+
+    {error && <p>{error}</p>}
   </div>;
 }
