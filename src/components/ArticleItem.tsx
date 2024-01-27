@@ -93,7 +93,7 @@ export default function ArticleItem({
           </div>
         )}
 
-        {(error || isLoading) && <p>{isLoading ? "Loading..." : error}</p>}
+        {isLoading && <p>Loading...</p>}
       </div>
     </div>
   );
