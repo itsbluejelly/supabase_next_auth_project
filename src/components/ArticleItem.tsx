@@ -67,7 +67,7 @@ export default function ArticleItem({
     <div>
       <div className="border flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-gray-900">
         <h2>{title}</h2>
-        {!isLoading ? (
+        {!(isLoading || error) ? (
           <div className={`grid ${hasVoted ? "text-rose-700" : "text-white"}`}>
             <span
               onClick={() => {
@@ -92,11 +92,9 @@ export default function ArticleItem({
             </span>
           </div>
         ) : (
-          <p>Loading...</p>
+          <p>{error ? error : "Loading..."}</p>
         )}
       </div>
-
-      {error && <p>{error}</p>}
     </div>
   );
 }
