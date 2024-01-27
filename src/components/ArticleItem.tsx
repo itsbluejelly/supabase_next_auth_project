@@ -65,7 +65,7 @@ export default function ArticleItem({
 
   return (
     <div>
-      <div className="border flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-gray-900">
+      {!isLoading && !error && <div className="border flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-gray-900">
         <h2>{title}</h2>
         <div className={`grid ${hasVoted ? "text-rose-700" : "text-white"}`}>
           <span
@@ -90,7 +90,7 @@ export default function ArticleItem({
             <IconsUp className="rotate-180" />
           </span>
         </div>
-      </div>
+      </div>}
 
       {isLoading && <p>Loading...</p>}
       {error && <p>{error}</p>}
