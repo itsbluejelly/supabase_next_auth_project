@@ -44,7 +44,7 @@ export default function Login() {
       }else{
         setError("")
         setSuccess(`Login successful`)
-        router.refresh()
+        router.push('/')
       }
     }catch (error: unknown) {
       setError((error as Error).message)
