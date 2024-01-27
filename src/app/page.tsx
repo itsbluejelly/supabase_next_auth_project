@@ -38,7 +38,7 @@ export default function Home() {
   return (
     <div className="container mx-auto my-8">
       {
-        isLoading 
+        !isLoading 
           ? 
         <div className="grid gap-4">
           {articles.map((article: any, key: number) => {

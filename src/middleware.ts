@@ -13,10 +13,14 @@ export async function middleware(req: NextRequest): Promise<NextResponse<unknown
     const {data: {session}} = await supabase.auth.getSession();
 
     if (!session) {
-        return NextResponse.rewrite(new URL('/login', req.url))
+      return NextResponse.rewrite(new URL('/login', req.url))
     }
 
-    return res
+    if(whiteList.includes(req.nextUrl.pathname)){
+      return NextResponse.rewrite(new URL('/', req.url))
+    }else{
+      return res
+    }
 };
 
 export const config = {
