@@ -91,9 +91,6 @@ export default function ArticleItem({
           </span>
         </div>
       </div>}
-
-      {isLoading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
     </div>
   );
 }
