@@ -3,6 +3,12 @@ import { NextRequest, NextResponse } from "next/server"
 
 export async function middleware(req: NextRequest): Promise<NextResponse<unknown>>{
     const res: NextResponse<unknown> = NextResponse.next()
+    const publicUrls = ['/reset']
+
+    if(publicUrls.includes(req.nextUrl.pathname)){
+        return res
+    }
+
     const supabase = createMiddlewareClient({req, res})
     const {data: {session}} = await supabase.auth.getSession()
 
