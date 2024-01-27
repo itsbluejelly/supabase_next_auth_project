@@ -1,15 +1,36 @@
-"use client"
+"use client";
 
-import {supabase} from "@/lib/supabase"
+import ArticleItem from "@/components/ArticleItem";
+import { useArticles } from "@/hooks/useArticle";
+import { supabase } from "@/lib/supabase";
+import { useEffect } from "react";
 import React from "react"
 
 export default function Home() {
-  const setNewView: () => Promise<void> = React.useCallback(async() => {
-    const {data, error} = await supabase.from("views").select()
-    data?.length ? console.log(data) : console.log(error)
-  }, [])
+  const { articles, getArticles } = useArticles();
 
-  React.useEffect(() => {setNewView}, [setNewView])
+  supabase
+    .channel('articles-follow-up')
+    .on('postgres_changes', {
+      event: '*',
+      schema: 'public',
+      table: 'votes'
+    }, async () => {
+      await getArticles()
+    })
+    .subscribe();
 
-  return <h1>Hello world</h1>
+  useEffect(() => {
+    getArticles();
+  }, [getArticles]);
+
+  return (
+    <div className="container mx-auto my-8">
+      <div className="grid gap-4">
+        {articles.map((article: any, key: number) => {
+          return <ArticleItem key={key} article={article} />;
+        })}
+      </div>
+    </div>
+  );
 }
