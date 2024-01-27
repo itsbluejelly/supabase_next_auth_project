@@ -67,7 +67,7 @@ export default function ArticleItem({
     <div>
       <div className="border flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-gray-900">
         <h2>{title}</h2>
-        {!(isLoading || error) ? (
+        {!(isLoading || error) && (
           <div className={`grid ${hasVoted ? "text-rose-700" : "text-white"}`}>
             <span
               onClick={() => {
@@ -91,9 +91,9 @@ export default function ArticleItem({
               <IconsUp className="rotate-180" />
             </span>
           </div>
-        ) : (
-          <p>{error ? error : "Loading..."}</p>
         )}
+
+        {(error || isLoading) && <p>{isLoading ? "Loading..." : error}</p>}
       </div>
     </div>
   );
