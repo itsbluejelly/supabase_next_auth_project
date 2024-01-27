@@ -67,34 +67,33 @@ export default function ArticleItem({
     <div>
       <div className="border flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-gray-900">
         <h2>{title}</h2>
-        {!(isLoading || error) && (
-          <div className={`grid ${hasVoted ? "text-rose-700" : "text-white"}`}>
-            <span
-              onClick={() => {
-                setIsLoading(true);
-                newVote(id);
-                setIsLoading(false);
-              }}
-            >
-              <IconsUp />
-            </span>
+        <div className={`grid ${hasVoted ? "text-rose-700" : "text-white"}`}>
+          <span
+            onClick={() => {
+              setIsLoading(true);
+              newVote(id);
+              setIsLoading(false);
+            }}
+          >
+            <IconsUp />
+          </span>
 
-            <span>{votes?.length} votes</span>
+          <span>{votes?.length} votes</span>
 
-            <span
-              onClick={() => {
-                setIsLoading(true);
-                newVote(id, true);
-                setIsLoading(false);
-              }}
-            >
-              <IconsUp className="rotate-180" />
-            </span>
-          </div>
-        )}
-
-        {isLoading && <p>Loading...</p>}
+          <span
+            onClick={() => {
+              setIsLoading(true);
+              newVote(id, true);
+              setIsLoading(false);
+            }}
+          >
+            <IconsUp className="rotate-180" />
+          </span>
+        </div>
       </div>
+
+      {isLoading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
     </div>
   );
 }
