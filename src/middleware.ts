@@ -9,9 +9,9 @@ export async function middleware(req: NextRequest): Promise<NextResponse<unknown
     const supabase = createMiddlewareClient({ req, res });
     const {data: {user}} = await supabase.auth.getUser();
 
-    // if (!user) {
-    //   return NextResponse.redirect(new URL('/login', req.url))
-    // }
+    if (!user) {
+      return NextResponse.redirect(new URL('/login', req.url))
+    }
 
     // if(whiteList.includes(req.nextUrl.pathname)){
     //   return NextResponse.redirect(new URL('/', req.url))    
