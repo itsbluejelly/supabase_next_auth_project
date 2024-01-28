@@ -12,9 +12,7 @@ export async function middleware(req: NextRequest): Promise<NextResponse<unknown
       return NextResponse.redirect(new URL('/login', req.url))
     }
 
-    const {data: {session}} = await supabase.auth.getSession();
-
-    if(whiteList.includes(req.nextUrl.pathname) && session){
+    if(whiteList.includes(req.nextUrl.pathname)){
       return NextResponse.rewrite(new URL('/', req.url))    
     }else{
       return res
