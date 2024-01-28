@@ -6,14 +6,14 @@ export async function middleware(req: NextRequest): Promise<NextResponse<unknown
     const whiteList: string[] = ['/login', '/signup']
 
     const supabase = createMiddlewareClient({ req, res });
+    const {data: {user}} = await supabase.auth.getUser();
     const {data: {session}} = await supabase.auth.getSession();
-    console.log(session)
 
     if(whiteList.includes(req.nextUrl.pathname) && !session){
         return res
     }
 
-    if (!session) {
+    if (!user) {
       return NextResponse.redirect(new URL('/login', req.url))
     }
 
