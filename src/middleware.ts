@@ -11,13 +11,17 @@ export async function middleware(req: NextRequest): Promise<NextResponse<unknown
 
     if(whiteList.includes(req.nextUrl.pathname) && !user){
       return res   
-    }else if(!user){
-      return NextResponse.redirect(new URL('/login', req.url))
-    }else if(whiteList.includes(req.nextUrl.pathname) && user){
-      return NextResponse.redirect(new URL('/', req.url))    
-    }else{
-      return res
     }
+    
+    if(!user){
+      return NextResponse.redirect(new URL('/login', req.url))
+    }
+    
+    if(whiteList.includes(req.nextUrl.pathname) && user){
+      return NextResponse.redirect(new URL('/', req.url))    
+    }
+    
+    return res
 };
 
 export const config = {
